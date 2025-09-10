@@ -1,13 +1,7 @@
 # Проектная работа «Stellar Burger»
 
-
-
-
-
-
 ## Макет проекта
 [Ссылка на макет](https://www.figma.com/file/vIywAvqfkOIRWGOkfOnReY/React-Fullstack_-Проектные-задачи-(3-месяца)_external_link?type=design&node-id=0-1&mode=design)
-
 
 ## Используемые технологии
 - Create React App для быстрого старта разработки
