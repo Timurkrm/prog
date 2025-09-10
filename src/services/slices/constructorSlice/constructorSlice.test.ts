@@ -1,9 +1,9 @@
 import constructorSlice, {
-  addIngredient,
   initialState,
-  moveIngredientDown,
   moveIngredientUp,
+  addIngredient,
   orderBurger,
+  moveIngredientDown,
   removeIngredient
 } from './constructorSlice';
 import { expect, test, describe } from '@jest/globals';
@@ -77,8 +77,8 @@ describe('тестирование редьюсера constructorSlice', () => {
         })
       );
 
-      const ingredient = newState.constructorItems.ingredients[0];
       const expectedIngredient = expectedResult.constructorItems.ingredients[0];
+      const ingredient = newState.constructorItems.ingredients[0]; 
 
       expect(ingredient).toEqual({
         ...expectedIngredient,
