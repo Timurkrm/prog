@@ -18,6 +18,8 @@ export type TConsturctorState = {
   error: string | null;
 };
 
+export type TConstructorState = TConsturctorState;
+
 export const initialState: TConsturctorState = {
   loading: false,
   constructorItems: {
@@ -61,20 +63,22 @@ export const constructorSlice = createSlice({
         );
     },
     moveIngredientUp: (state, action: PayloadAction<number>) => {
-      state.constructorItems.ingredients.splice(
-        action.payload,
-        0,
-        state.constructorItems.ingredients.splice(action.payload - 1, 1)[0]
-      );
+      const from = action.payload;
+      const items = state.constructorItems.ingredients;
+      if (from <= 0 || from >= items.length) return;
+      const to = from - 1;
+      const [moved] = items.splice(from, 1);
+      items.splice(to, 0, moved);
     },
     moveIngredientDown: (state, action: PayloadAction<number>) => {
-      state.constructorItems.ingredients.splice(
-        action.payload,
-        0,
-        state.constructorItems.ingredients.splice(action.payload + 1, 1)[0]
-      );
+      const from = action.payload;
+      const items = state.constructorItems.ingredients;
+      if (from < 0 || from >= items.length - 1) return;
+      const to = from + 1;
+      const [moved] = items.splice(from, 1);
+      items.splice(to, 0, moved);
     },
-    setRequest: (state, action) => {
+    setRequest: (state, action: PayloadAction<boolean>) => {
       state.orderRequest = action.payload;
     },
     resetModal: (state) => {
@@ -83,7 +87,7 @@ export const constructorSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(orderBurger.pending, (state, action) => {
+      .addCase(orderBurger.pending, (state) => {
         state.loading = true;
         state.orderRequest = true;
         state.error = null;
@@ -91,18 +95,17 @@ export const constructorSlice = createSlice({
       .addCase(orderBurger.rejected, (state, action) => {
         state.loading = false;
         state.orderRequest = false;
-        state.error = action.error.message as string;
+        state.error = action.error.message ?? 'Order request failed';
       })
       .addCase(orderBurger.fulfilled, (state, action) => {
         state.loading = false;
         state.orderRequest = false;
         state.error = null;
-        state.orderModalData = action.payload.order;
+        state.orderModalData = action.payload.order as TOrder;
         state.constructorItems = {
           bun: null,
           ingredients: []
         };
-        console.log(action.payload);
       });
   }
 });
